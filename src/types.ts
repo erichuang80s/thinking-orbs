@@ -1,5 +1,3 @@
-import type { CSSProperties, CanvasHTMLAttributes } from 'react';
-
 /**
  * The six shipped states — each a hand-tuned animation:
  * - `working`   — particles on tilted orbits
@@ -37,8 +35,15 @@ export type OrbSize = 64 | 20;
  */
 export type OrbTheme = 'auto' | 'dark' | 'light';
 
-/** Props for the ThinkingOrb React component. */
-export interface ThinkingOrbProps extends Omit<CanvasHTMLAttributes<HTMLCanvasElement>, 'style'> {
+/**
+ * Props for the `<ThinkingOrb>` Vue component.
+ *
+ * Any other native `<canvas>` attribute (`class`, `style`, `data-*`,
+ * `aria-label`, …) passes straight through to the underlying canvas via
+ * Vue's fallthrough-attributes mechanism. A per-state `aria-label` is
+ * applied by default and can be overridden by passing `aria-label`.
+ */
+export interface ThinkingOrbProps {
   /** Which animation to show. @default 'working' */
   state?: OrbState;
 
@@ -56,6 +61,4 @@ export interface ThinkingOrbProps extends Omit<CanvasHTMLAttributes<HTMLCanvasEl
 
   /** Freeze the animation on the current frame. @default false */
   paused?: boolean;
-
-  style?: CSSProperties;
 }

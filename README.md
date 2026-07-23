@@ -12,44 +12,48 @@ npm install thinking-orbs
 
 ## Quick start
 
-```tsx
+```vue
+<script setup lang="ts">
 import { ThinkingOrb } from 'thinking-orbs';
+</script>
 
-function Status() {
-  return <ThinkingOrb state="searching" size={64} />;
-}
+<template>
+  <ThinkingOrb state="searching" :size="64" />
+</template>
 ```
+
+Requires Vue 3.4+. `@vueuse/core` ships as a dependency and is installed automatically.
 
 ## States
 
 Six verbs an agent can be doing, each a distinct animation:
 
-```tsx
-<ThinkingOrb state="working" />    {/* particles on tilted orbits */}
-<ThinkingOrb state="searching" />  {/* a scan meridian sweeps a dotted globe */}
-<ThinkingOrb state="solving" />    {/* bands scramble, then click back solved */}
-<ThinkingOrb state="listening" />  {/* a waveform rolls through the rings */}
-<ThinkingOrb state="composing" />  {/* an undulating multi-band sash */}
-<ThinkingOrb state="shaping" />    {/* dotted outline: circle → triangle → square */}
+```vue
+<ThinkingOrb state="working" />    <!-- particles on tilted orbits -->
+<ThinkingOrb state="searching" />  <!-- a scan meridian sweeps a dotted globe -->
+<ThinkingOrb state="solving" />    <!-- bands scramble, then click back solved -->
+<ThinkingOrb state="listening" />  <!-- a waveform rolls through the rings -->
+<ThinkingOrb state="composing" />  <!-- an undulating multi-band sash -->
+<ThinkingOrb state="shaping" />    <!-- dotted outline: circle → triangle → square -->
 ```
 
 ## Sizes
 
 Two tuned presets — separate designs, not a scale factor. `64` for chat-avatar scale, `20` for inline-text scale. Each carries its own dot count, dot size and speed tuning:
 
-```tsx
-<ThinkingOrb state="working" size={64} />
-<ThinkingOrb state="working" size={20} />
+```vue
+<ThinkingOrb state="working" :size="64" />
+<ThinkingOrb state="working" :size="20" />
 ```
 
 ## Theme
 
 Strictly monochrome — light ink for dark backgrounds, dark ink for light backgrounds — with the mode picked automatically from the host project:
 
-```tsx
-<ThinkingOrb theme="auto" />   {/* default — detects from the project */}
-<ThinkingOrb theme="dark" />   {/* pin: light dots for dark backgrounds */}
-<ThinkingOrb theme="light" />  {/* pin: dark dots for light backgrounds */}
+```vue
+<ThinkingOrb theme="auto" />   <!-- default — detects from the project -->
+<ThinkingOrb theme="dark" />   <!-- pin: light dots for dark backgrounds -->
+<ThinkingOrb theme="light" />  <!-- pin: dark dots for light backgrounds -->
 ```
 
 `auto` resolves in three layers and updates live when any of them change:
@@ -60,17 +64,20 @@ Strictly monochrome — light ink for dark backgrounds, dark ink for light backg
 
 ## Other props
 
-```tsx
+```vue
 <ThinkingOrb
   state="solving"
-  size={20}
-  speed={1.5}          // multiplier on the preset's baked speed
-  paused={false}       // freeze on the current frame
-  aria-label="Analysing repository…"  // overrides the per-state default
+  :size="20"
+  :speed="1.5"          
+  :paused="false"       
+  aria-label="Analysing repository…"  
 />
+<!-- speed: multiplier on the preset's baked speed -->
+<!-- paused: freeze on the current frame -->
+<!-- aria-label: overrides the per-state default -->
 ```
 
-All other `<canvas>` props (`className`, `style`, `data-*`, …) pass through.
+All other `<canvas>` attributes (`class`, `style`, `data-*`, …) pass through via Vue's fallthrough attributes.
 
 ## Accessibility & performance
 

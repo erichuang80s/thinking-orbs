@@ -1,11 +1,11 @@
 import { resolve } from 'path';
-import react from '@vitejs/plugin-react';
+import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   plugins: [
-    react(),
+    vue(),
     dts({
       include: ['src'],
       rollupTypes: true
@@ -22,12 +22,11 @@ export default defineConfig({
       formats: ['es', 'cjs']
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: ['vue', '@vueuse/core'],
       output: {
         globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'jsxRuntime'
+          vue: 'Vue',
+          '@vueuse/core': 'VueUse'
         }
       }
     }
