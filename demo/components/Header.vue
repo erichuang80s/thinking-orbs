@@ -17,6 +17,7 @@ const iconBtnClass =
   'flex items-center justify-center size-9 border-none rounded-full bg-(--icon-btn-bg) text-inherit cursor-pointer no-underline transition-[background-color] duration-200 [-webkit-tap-highlight-color:transparent] hover:bg-(--icon-btn-hover) focus-visible:outline-2 focus-visible:outline-(--icon-btn-outline) focus-visible:outline-offset-2 [&_svg]:block [&_svg]:shrink-0 [&_svg]:fill-(--icon-btn-fill) [&_svg]:opacity-60 [&_svg]:transition-opacity [&_svg]:duration-200 hover:[&_svg]:opacity-100';
 
 const isDev = import.meta.env.DEV;
+const headerImageSrc = `${import.meta.env.BASE_URL}header.png`;
 </script>
 
 <template>
@@ -93,7 +94,7 @@ const isDev = import.meta.env.DEV;
     <div class="relative -mt-[190px] -mb-5 cursor-pointer group" aria-hidden="true">
       <img
         class="block relative transition-[filter,transform] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-[filter,transform] motion-reduce:!transition-none group-hover:[filter:brightness(1.1)] group-hover:[transform:rotate(8deg)_scale(1.06)]"
-        src="/header.png"
+        :src="headerImageSrc"
         alt=""
         width="146"
         height="117"

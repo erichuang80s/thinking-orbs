@@ -4,6 +4,14 @@ Dotted thought-orb loading indicators for AI & agent UIs. Six hand-tuned animate
 
 [Live demo](https://orbs.jakubantalik.com) · [Repository](https://github.com/Jakubantalik/thinking-orbs) · [Report an issue](https://github.com/Jakubantalik/thinking-orbs/issues)
 
+## Publish demo to GitHub Pages
+
+This repo already includes `.github/workflows/pages.yml`, which builds `demo/` and deploys `dist-demo` to GitHub Pages on every push to `main`.
+
+1. In GitHub, open **Settings → Pages**.
+2. Set **Source** to **GitHub Actions**.
+3. Push to `main` (or run **Deploy demo to GitHub Pages** manually from Actions).
+
 ## Install
 
 ```bash
