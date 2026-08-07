@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import type { OrbSize, OrbState } from '../../src';
+import type { OrbSize, OrbSizeInput, OrbState } from '../../src';
 import { ThinkingOrb } from '../../src';
 import { cn } from '../lib/utils';
 import CopyButton from './CopyButton.vue';
@@ -24,13 +24,15 @@ const STATES: OrbState[] = [
   'shaping'
 ];
 const SIZES: OrbSize[] = [64, 20];
+const CUSTOM_MIN = 12;
+const CUSTOM_MAX = 160;
 
 const SPEED_MIN = 25;
 const SPEED_MAX = 300;
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-function buildSnippet(state: OrbState, size: OrbSize, speed: number) {
+function buildSnippet(state: OrbState, size: OrbSizeInput, speed: number) {
   const attrs = [`state="${state}"`, `:size="${size}"`];
   if (speed !== 100) attrs.push(`:speed="${(speed / 100).toFixed(2)}"`);
   return `import { ThinkingOrb } from 'thinking-orbs';\n\n<ThinkingOrb ${attrs.join(' ')} />`;
@@ -49,7 +51,21 @@ function tabBtnClass(active: boolean) {
 }
 
 const state = ref<OrbState>('listening');
-const size = ref<OrbSize>(64);
+const size = ref<OrbSizeInput>(64);
+// Remembers the last typed custom value so switching back to "Custom"
+// after a preset tab restores it instead of resetting to the min.
+const customSize = ref(40);
+const isCustom = computed(() => size.value !== 64 && size.value !== 20);
+
+function selectCustom() {
+  size.value = customSize.value;
+}
+function onCustomInput(e: Event) {
+  const v = Number((e.target as HTMLInputElement).value);
+  customSize.value = v;
+  size.value = v;
+}
+
 // Playground starts paused so the page loads quietly; the PlayPauseToggle
 // below only flips this local state, so the surrounding Examples keep
 // auto-playing regardless.
@@ -88,7 +104,7 @@ function onSpeedInput(e: Event) {
       <div class="flex items-end gap-6 max-sm:flex-col max-sm:items-stretch max-sm:gap-4">
         <div class="flex flex-col gap-[9px] min-w-0" role="radiogroup" aria-label="Orb size">
           <span class="text-xs font-normal leading-[14px] text-(--text-muted)">Size</span>
-          <div class="flex gap-2 items-center">
+          <div class="flex gap-2 items-center flex-wrap">
             <button
               v-for="s in SIZES"
               :key="s"
@@ -98,6 +114,19 @@ function onSpeedInput(e: Event) {
             >
               {{ s }}px
             </button>
+            <button type="button" :class="tabBtnClass(isCustom)" @click="selectCustom">
+              Custom
+            </button>
+            <input
+              v-if="isCustom"
+              class="h-9 w-20 rounded-lg bg-(--tab-bg) text-(--tab-active-color) text-[13px] text-center [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-[rgba(255,255,255,0.5)] focus-visible:outline-offset-2"
+              type="number"
+              :min="CUSTOM_MIN"
+              :max="CUSTOM_MAX"
+              :value="customSize"
+              aria-label="Custom size in pixels"
+              @input="onCustomInput"
+            />
           </div>
         </div>
 

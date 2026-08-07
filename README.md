@@ -57,6 +57,12 @@ Two tuned presets — separate designs, not a scale factor. `64` for chat-avatar
 <ThinkingOrb state="working" :size="20" />
 ```
 
+Any other number is accepted too. It's interpolated (or extrapolated beyond 20–64) between the two presets' dot count, dot size and speed — not a straight scale of the 64px design, since the presets themselves aren't:
+
+```vue
+<ThinkingOrb state="working" :size="40" />
+```
+
 ## Theme
 
 Strictly monochrome — light ink for dark backgrounds, dark ink for light backgrounds — with the mode picked automatically from the host project:

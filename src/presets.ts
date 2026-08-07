@@ -5,7 +5,7 @@
 
 import type { ModeOpts } from './engine/profiles';
 import { BASE_PROFILES, scaleCounts, scaleRadii } from './engine/profiles';
-import type { OrbSize, OrbState } from './types';
+import type { OrbSize, OrbSizeInput, OrbState } from './types';
 
 export type ModeKey =
   | 'orbits'
@@ -85,14 +85,54 @@ export interface Resolved {
 
 const cache = new Map<string, Resolved>();
 
+const ANCHOR_SMALL: OrbSize = 20;
+const ANCHOR_LARGE: OrbSize = 64;
+
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+// Log-space interpolation: the two shipped presets are hand-tuned, not a
+// scale factor of one another, so a size between/outside 20 and 64 blends
+// their count/size/speed rather than picking either verbatim. Log-space
+// keeps the blend visually even, since dot count and radius both read on
+// a roughly multiplicative scale.
+function interpolatePreset(small: Preset, large: Preset, size: number): Preset {
+  const t =
+    (Math.log(size) - Math.log(ANCHOR_SMALL)) / (Math.log(ANCHOR_LARGE) - Math.log(ANCHOR_SMALL));
+
+  let extra: ModeOpts | undefined;
+  if (small.extra || large.extra) {
+    extra = {};
+    const keys = new Set([...Object.keys(small.extra ?? {}), ...Object.keys(large.extra ?? {})]);
+    for (const k of keys) {
+      const a = small.extra?.[k];
+      const b = large.extra?.[k];
+      extra[k] = a != null && b != null ? lerp(a, b, t) : (b ?? a);
+    }
+  }
+
+  return {
+    speed: lerp(small.speed, large.speed, t),
+    count: lerp(small.count, large.count, t),
+    size: lerp(small.size, large.size, t),
+    extra
+  };
+}
+
 /** Resolve a (state, size) pair to its mode + fully-scaled draw options. */
-export function resolvePreset(state: OrbState, size: OrbSize): Resolved {
+export function resolvePreset(state: OrbState, size: OrbSizeInput): Resolved {
   const key = `${state}-${size}`;
   const hit = cache.get(key);
   if (hit) return hit;
 
   const mode = STATE_TO_MODE[state];
-  const preset = PRESETS[mode][size];
+  const table = PRESETS[mode];
+  const preset =
+    size === ANCHOR_SMALL || size === ANCHOR_LARGE
+      ? table[size]
+      : interpolatePreset(table[ANCHOR_SMALL], table[ANCHOR_LARGE], size);
+
   let opts: ModeOpts = { ...BASE_PROFILES[mode] };
   if (preset.count !== 1) opts = scaleCounts(opts, preset.count);
   if (preset.size !== 1) opts = scaleRadii(opts, preset.size);

@@ -30,6 +30,14 @@ export type OrbState =
 export type OrbSize = 64 | 20;
 
 /**
+ * Any rendered size in CSS pixels. `64` and `20` use their hand-tuned
+ * preset directly; any other number is log-interpolated (or extrapolated
+ * outside the 20–64 range) between the two presets' dot count, dot size
+ * and speed — not a straight visual scale of the 64px design.
+ */
+export type OrbSizeInput = OrbSize | number;
+
+/**
  * Theme mode.
  *
  * - `auto` (default) resolves in three layers, live-updating on change:
@@ -59,8 +67,12 @@ export interface ThinkingOrbProps {
   /** Which animation to show. @default 'working' */
   state?: OrbState;
 
-  /** Tuned size preset — 64 or 20 CSS px. @default 64 */
-  size?: OrbSize;
+  /**
+   * Rendered size in CSS px. `64` and `20` use their hand-tuned preset
+   * directly; any other number interpolates/extrapolates between them.
+   * @default 64
+   */
+  size?: OrbSizeInput;
 
   /** Theme mode; `auto` detects from the host project. @default 'auto' */
   theme?: OrbTheme;
