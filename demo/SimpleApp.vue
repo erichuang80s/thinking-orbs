@@ -8,7 +8,10 @@ const STATES: Array<{ state: OrbState; blurb: string }> = [
   { state: 'searching', blurb: 'a scan meridian sweeps the field' },
   { state: 'solving', blurb: 'bands scramble, then click back' },
   { state: 'listening', blurb: 'a waveform rolls through the rings' },
+  { state: 'connecting', blurb: 'a constellation wires itself' },
+  { state: 'weaving', blurb: 'three strands plait around the sphere' },
   { state: 'composing', blurb: 'an undulating sash of bands' },
+  { state: 'breathing', blurb: 'a ring slowly morphing' },
   { state: 'shaping', blurb: 'circle → triangle → square' }
 ];
 
@@ -24,7 +27,7 @@ watchEffect(() => {
 <template>
   <div class="page">
     <header>
-      <span class="mono">THINKING-ORBS · SIX STATES · TWO SIZES · AUTO THEME</span>
+      <span class="mono">THINKING-ORBS · NINE STATES · TWO SIZES · AUTO THEME</span>
       <button class="mono theme-btn" type="button" @click="dark = !dark">
         {{ dark ? 'LIGHT' : 'DARK' }}
       </button>

@@ -12,7 +12,17 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{ 'update:speed': [number] }>();
 
-const STATES: OrbState[] = ['working', 'searching', 'solving', 'listening', 'composing', 'shaping'];
+const STATES: OrbState[] = [
+  'working',
+  'searching',
+  'solving',
+  'listening',
+  'connecting',
+  'weaving',
+  'composing',
+  'breathing',
+  'shaping'
+];
 const SIZES: OrbSize[] = [64, 20];
 
 const SPEED_MIN = 25;

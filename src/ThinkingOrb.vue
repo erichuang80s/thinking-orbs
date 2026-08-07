@@ -25,7 +25,10 @@ const LABELS: Record<OrbState, string> = {
   searching: 'Searching…',
   solving: 'Solving…',
   listening: 'Listening…',
+  connecting: 'Connecting…',
+  weaving: 'Weaving…',
   composing: 'Composing…',
+  breathing: 'Thinking…',
   shaping: 'Shaping…'
 };
 
